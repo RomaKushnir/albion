@@ -1,0 +1,45 @@
+.container {
+  padding-left: 23px;
+  padding-right: 23px;
+}
+
+header {
+  padding-top: 50px;
+  padding-bottom: 25px;
+  h1 {
+    font-size: 48px;
+    font-weight: 700;
+    color: #3d3d3d;
+  }
+  h2 {
+    font-size: 24px;
+    color: #636363;
+    span {
+      &.clickable {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.content {
+  background-color: #fff;
+  box-shadow: 0 0 10px 0px #c8c7c7;
+  padding-top: 25px;
+  padding-bottom: 35px;
+}
+
+.actionBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  .selectsWrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    & > div:first-child {
+      margin-right: 15px;
+    }
+  }
+}
