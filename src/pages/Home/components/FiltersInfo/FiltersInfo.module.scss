@@ -1,0 +1,18 @@
+.subTitle {
+  font-size: 24px;
+  color: #636363;
+  span {
+    &.clickable {
+      cursor: pointer;
+      display: inline-block;
+      &::after {
+        display: block;
+        content: '';
+        background-color: #636363;
+        height: 2px;
+        width: 100%;
+        margin-top: -4px;
+      }
+    }
+  }
+}
