@@ -1,20 +1,15 @@
 import styles from './Home.module.scss';
 import PageWrapper from 'components/PageWrapper';
-import ReloadButton from './components/ReloadButton';
+import FiltersInfo from './components/FiltersInfo';
 import Select from 'components/Select';
+import ReloadButton from './components/ReloadButton';
 
 const Main = () => {
   return (
     <PageWrapper>
       <header className={styles.container}>
         <h1>ALBION ONLINE LEADERBOARDS</h1>
-        <h2>
-          <span>Best</span>&nbsp;
-          <span className={styles.clickable}>{'bow'}</span>&nbsp;
-          <span>players within</span>&nbsp;
-          <span className={styles.clickable}>{'this week'}</span>&nbsp;
-          <span>by total kill fame</span>
-        </h2>
+        <FiltersInfo />
       </header>
       <div className={`${styles.content} ${styles.container}`}>
         <section className={styles.actionBlock}>
