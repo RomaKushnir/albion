@@ -8,6 +8,8 @@ import ReloadButton from './components/ReloadButton';
 import ListItem from './components/ListItem';
 import Pagination from 'components/Pagination';
 
+const defRequestValues = { offset: 1, size: 10 };
+
 const Main = () => {
   const [players, setPlayers] = useState([]);
   const [pageOffset, setPageOffset] = useState(0);
@@ -25,7 +27,7 @@ const Main = () => {
   };
 
   useEffect(() => {
-    setData({ offset: pageOffset, size: pageSize });
+    setData(defRequestValues);
   }, []);
 
   return (
