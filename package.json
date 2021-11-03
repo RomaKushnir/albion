@@ -2,12 +2,12 @@
   "name": "albion",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://gameinfo.albiononline.com",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "antd": "^4.16.13",
+    "http-proxy-middleware": "^2.0.1",
     "mobx": "^6.3.3",
     "mobx-react-lite": "^3.2.1",
     "react": "^17.0.2",
