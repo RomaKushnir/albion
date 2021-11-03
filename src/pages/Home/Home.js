@@ -6,14 +6,26 @@ import FiltersInfo from './components/FiltersInfo';
 import Select from 'components/Select';
 import ReloadButton from './components/ReloadButton';
 import ListItem from './components/ListItem';
+import Pagination from 'components/Pagination';
 
 const Main = () => {
   const [players, setPlayers] = useState([]);
+  const [pageOffset, setPageOffset] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const totalItems = 100;
 
-  const pageOffset = 0;
+  const setData = ({ page, size, offset }) => {
+    getPlayers({ offset, size }).then((data) => {
+      setPlayers(data);
+      setCurrentPage(page ?? 1);
+      setPageSize(size);
+      setPageOffset(offset);
+    });
+  };
 
   useEffect(() => {
-    getPlayers(pageOffset).then((data) => setPlayers(data));
+    setData({ offset: pageOffset, size: pageSize });
   }, []);
 
   return (
@@ -40,6 +52,16 @@ const Main = () => {
                 position={pageOffset + i + 1}
               />
             ))}
+        </section>
+        <section className={styles.paginationBlock}>
+          <Pagination onPageChange={setData} total={totalItems} />
+          <div>
+            <p>{`Page ${currentPage}`}</p>
+            <p>
+              {`Showing ${pageOffset + 1}-${pageOffset + pageSize}
+              out of ${totalItems}`}
+            </p>
+          </div>
         </section>
       </div>
     </PageWrapper>

@@ -12,8 +12,13 @@ const fetchApi = fetchDefaults(
   }
 );
 
-export const getPlayers = (offset) => {
+export const getPlayers = ({
+  size = 10,
+  offset = 0,
+  range = 'lastMonth',
+  weapon = 'bow',
+}) => {
   return fetchApi(
-    `gameinfo/events/playerweaponfame?limit=10&offset=${offset}&range=lastMonth&weaponCategory=bow`
+    `gameinfo/events/playerweaponfame?limit=${size}&offset=${offset}&range=${range}&weaponCategory=${weapon}`
   ).then((res) => res.json());
 };
