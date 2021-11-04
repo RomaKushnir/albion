@@ -19,11 +19,11 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://gameinfo.albiononline.com/:path*"
+      "destination": "https://gameinfo.albiononline.com/api/:path*"
     },
     {
       "source": "/api/:path*/",
-      "destination": "https://gameinfo.albiononline.com/:path*/"
+      "destination": "https://gameinfo.albiononline.com/api/:path*/"
     }
   ]
 }
