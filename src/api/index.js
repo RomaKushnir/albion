@@ -1,16 +1,16 @@
-import fetchDefaults from 'fetch-defaults';
+// import fetchDefaults from 'fetch-defaults';
 
-const fetchApi = fetchDefaults(
-  fetch,
-  'https://cors-anywhere.herokuapp.com/https://gameinfo.albiononline.com/api/',
-  {
-    headers: {
-      // mode: 'no-cors',
-      // referrerPolicy: 'no-referrer',
-      // 'Access-Control-Allow-Origin': 'http://localhost:3000',
-    },
-  }
-);
+// const fetchApi = fetchDefaults(
+//   fetch,
+//   'https://cors-anywhere.herokuapp.com/https://gameinfo.albiononline.com/api/',
+//   {
+//     headers: {
+//       // mode: 'no-cors',
+//       // referrerPolicy: 'no-referrer',
+//       // 'Access-Control-Allow-Origin': 'http://localhost:3000',
+//     },
+//   }
+// );
 
 export const getPlayers = ({
   size = 10,
@@ -18,7 +18,7 @@ export const getPlayers = ({
   range = 'lastMonth',
   weapon = 'bow',
 }) => {
-  return fetchApi(
-    `gameinfo/events/playerweaponfame?limit=${size}&offset=${offset}&range=${range}&weaponCategory=${weapon}`
+  return fetch(
+    `/api/gameinfo/events/playerweaponfame?limit=${size}&offset=${offset}&range=${range}&weaponCategory=${weapon}`
   ).then((res) => res.json());
 };
