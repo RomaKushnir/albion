@@ -8,26 +8,26 @@ import ReloadButton from './components/ReloadButton';
 import ListItem from './components/ListItem';
 import Pagination from 'components/Pagination';
 
-const defRequestValues = { offset: 1, size: 10 };
+const defaultRequestValues = { page: 1, offset: 0, size: 10 };
+const totalItems = 100;
 
 const Main = () => {
   const [players, setPlayers] = useState([]);
   const [pageOffset, setPageOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const totalItems = 100;
 
   const setData = ({ page, size, offset }) => {
     getPlayers({ offset, size }).then((data) => {
       setPlayers(data);
-      setCurrentPage(page ?? 1);
+      setCurrentPage(page);
       setPageSize(size);
       setPageOffset(offset);
     });
   };
 
   useEffect(() => {
-    setData(defRequestValues);
+    setData(defaultRequestValues);
   }, []);
 
   return (
