@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import styles from './Home.module.scss';
 import { getPlayers } from 'api';
 import PageWrapper from 'components/PageWrapper';
@@ -7,6 +7,7 @@ import Select from 'components/Select';
 import ReloadButton from './components/ReloadButton';
 import ListItem from './components/ListItem';
 import Pagination from 'components/Pagination';
+import Spinner from 'components/Spinner';
 
 const defaultRequestValues = { page: 1, offset: 0, size: 10 };
 const totalItems = 100;
@@ -16,15 +17,22 @@ const Main = () => {
   const [pageOffset, setPageOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [isDataLoading, setIsDataLoading] = useState(false);
 
   const setData = ({ page, size, offset }) => {
+    setIsDataLoading(true);
     getPlayers({ offset, size }).then((data) => {
       setPlayers(data);
       setCurrentPage(page);
       setPageSize(size);
       setPageOffset(offset);
+      setIsDataLoading(false);
     });
   };
+
+  const noPlayersLoaded = useMemo(() => {
+    return !!players.length;
+  }, [players]);
 
   useEffect(() => {
     setData(defaultRequestValues);
@@ -46,23 +54,28 @@ const Main = () => {
         </section>
         <section className={styles.listBlock}>
           <h3>Leaderboard</h3>
-          {!!players.length &&
-            players.map((player, i) => (
-              <ListItem
-                key={pageOffset + i + 1}
-                player={player}
-                position={pageOffset + i + 1}
-              />
-            ))}
-        </section>
-        <section className={styles.paginationBlock}>
-          <Pagination onPageChange={setData} total={totalItems} />
-          <div>
-            <p>{`Page ${currentPage}`}</p>
-            <p>
-              {`Showing ${pageOffset + 1}-${pageOffset + pageSize}
-              out of ${totalItems}`}
-            </p>
+          <div className={styles.listContainer}>
+            {isDataLoading && <Spinner />}
+            {noPlayersLoaded &&
+              players.map((player, i) => (
+                <ListItem
+                  key={pageOffset + i + 1}
+                  player={player}
+                  position={pageOffset + i + 1}
+                />
+              ))}
+            {noPlayersLoaded && (
+              <div className={styles.paginationBlock}>
+                <Pagination onPageChange={setData} total={totalItems} />
+                <div>
+                  <p>{`Page ${currentPage}`}</p>
+                  <p>
+                    {`Showing ${pageOffset + 1}-${pageOffset + pageSize}
+                      out of ${totalItems}`}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </section>
       </div>
