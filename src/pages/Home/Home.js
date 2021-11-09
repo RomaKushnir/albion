@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
+import { observer } from 'mobx-react-lite';
+import { useStore } from '../../store';
 import styles from './Home.module.scss';
-import { getPlayers } from 'api';
 import PageWrapper from 'components/PageWrapper';
 import FiltersInfo from './components/FiltersInfo';
 import Select from 'components/Select';
@@ -9,34 +10,33 @@ import ListItem from './components/ListItem';
 import Pagination from 'components/Pagination';
 import Spinner from 'components/Spinner';
 
-const defaultRequestValues = { page: 1, offset: 0, size: 10 };
 const totalItems = 100;
 
-const Main = () => {
-  const [players, setPlayers] = useState([]);
+const Main = observer(() => {
+  const store = useStore();
+
   const [pageOffset, setPageOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [isDataLoading, setIsDataLoading] = useState(false);
+  const [isPlayersLoading, setIsPlayersLoading] = useState(false);
 
-  const setData = ({ page, size, offset }) => {
-    setIsDataLoading(true);
-    getPlayers({ offset, size }).then((data) => {
-      setPlayers(data);
+  const getData = ({ page, size, offset }) => {
+    setIsPlayersLoading(true);
+    store.allPlayers.fetchPlayers({ offset, size }).then(() => {
+      setIsPlayersLoading(false);
       setCurrentPage(page);
       setPageSize(size);
       setPageOffset(offset);
-      setIsDataLoading(false);
     });
   };
 
   const noPlayersLoaded = useMemo(() => {
-    return !!players.length;
-  }, [players]);
+    return !!store.allPlayers.players.length;
+  }, [store.allPlayers.players]);
 
   useEffect(() => {
-    setData(defaultRequestValues);
-  }, []);
+    store.allPlayers.fetchPlayers();
+  }, [store.allPlayers]);
 
   return (
     <PageWrapper>
@@ -55,9 +55,9 @@ const Main = () => {
         <section className={styles.listBlock}>
           <h3>Leaderboard</h3>
           <div className={styles.listContainer}>
-            {isDataLoading && <Spinner />}
+            {isPlayersLoading && <Spinner />}
             {noPlayersLoaded &&
-              players.map((player, i) => (
+              store.allPlayers.players.map((player, i) => (
                 <ListItem
                   key={pageOffset + i + 1}
                   player={player}
@@ -66,7 +66,7 @@ const Main = () => {
               ))}
             {noPlayersLoaded && (
               <div className={styles.paginationBlock}>
-                <Pagination onPageChange={setData} total={totalItems} />
+                <Pagination onPageChange={getData} total={totalItems} />
                 <div>
                   <p>{`Page ${currentPage}`}</p>
                   <p>
@@ -81,6 +81,6 @@ const Main = () => {
       </div>
     </PageWrapper>
   );
-};
+});
 
 export default Main;
