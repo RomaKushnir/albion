@@ -7,8 +7,10 @@ class allPlayers {
   }
 
   players = [];
+  isPlayersLoading = false;
 
   fetchPlayers(params = {}) {
+    this.isPlayersLoading = true;
     return getPlayers(params).then((data) => {
       this.setPlayers(data);
     });
@@ -16,6 +18,7 @@ class allPlayers {
 
   setPlayers(data) {
     this.players = data;
+    this.isPlayersLoading = false;
   }
 }
 
