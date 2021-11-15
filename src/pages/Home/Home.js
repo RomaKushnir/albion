@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../store';
 import styles from './Home.module.scss';
@@ -11,32 +11,79 @@ import Pagination from 'components/Pagination';
 import Spinner from 'components/Spinner';
 
 const totalItems = 100;
+const timeRangeOptions = [
+  { id: 'week', name: 'week' },
+  { id: 'month', name: 'month' },
+  { id: 'lastWeek', name: 'lastWeek' },
+  { id: 'lastMonth', name: 'lastMonth' },
+];
 
 const Main = observer(() => {
   const store = useStore();
 
-  const [pageOffset, setPageOffset] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [isPlayersLoading, setIsPlayersLoading] = useState(false);
+  const [requestParams, setRequstParams] = useState({
+    currentPage: 1,
+    pageOffset: 0,
+    pageSize: 10,
+    weaponCategory: 'bow',
+    timeRange: 'lastMonth',
+  });
 
-  const getData = ({ page, size, offset }) => {
-    setIsPlayersLoading(true);
-    store.allPlayers.fetchPlayers({ offset, size }).then(() => {
-      setIsPlayersLoading(false);
-      setCurrentPage(page);
-      setPageSize(size);
-      setPageOffset(offset);
-    });
-  };
+  const { currentPage, pageOffset, pageSize, weaponCategory, timeRange } =
+    requestParams;
+
+  const getData = useCallback(
+    ({ page = 1, size = 10, offset = 0, weapon, range }) => {
+      store.allPlayers
+        .fetchPlayers({ offset, size, weapon, range })
+        .then(() => {
+          setRequstParams({
+            ...requestParams,
+            currentPage: page,
+            pageOffset: offset,
+            pageSize: size,
+          });
+        });
+    },
+    [store.allPlayers, requestParams]
+  );
 
   const noPlayersLoaded = useMemo(() => {
     return !!store.allPlayers.players.length;
   }, [store.allPlayers.players]);
 
+  const onWeaponSelectChange = (value) => {
+    setRequstParams({ ...requestParams, weaponCategory: value });
+  };
+
+  const onTimeSelectChange = (value) => {
+    setRequstParams({ ...requestParams, timeRange: value });
+  };
+
+  const onDataUpdate = () => {
+    getData({
+      page: 1,
+      offset: 0,
+      size: pageSize,
+      weapon: weaponCategory,
+      range: timeRange,
+    });
+  };
+
+  const onPageChange = ({ page, size, offset }) => {
+    getData({
+      page: page,
+      size: size,
+      offset: offset,
+      weapon: weaponCategory,
+      range: timeRange,
+    });
+  };
+
   useEffect(() => {
+    store.weapon.fetchWeapon();
     store.allPlayers.fetchPlayers();
-  }, [store.allPlayers]);
+  }, [store.allPlayers, store.weapon]);
 
   return (
     <PageWrapper>
@@ -47,15 +94,26 @@ const Main = observer(() => {
       <div className={`${styles.content} ${styles.container}`}>
         <section className={styles.actionBlock}>
           <div className={styles.selectsWrapper}>
-            <Select label="Weapon Group" />
-            <Select label="Time Range" />
+            <Select
+              label="Weapon Group"
+              options={store.weapon.playerWeapon}
+              isLoading={!store.weapon.isWeaponLoaded}
+              defaultValue={weaponCategory}
+              onChange={onWeaponSelectChange}
+            />
+            <Select
+              label="Time Range"
+              options={timeRangeOptions}
+              defaultValue={timeRange}
+              onChange={onTimeSelectChange}
+            />
           </div>
-          <ReloadButton />
+          <ReloadButton onDataUpdate={onDataUpdate} />
         </section>
         <section className={styles.listBlock}>
           <h3>Leaderboard</h3>
           <div className={styles.listContainer}>
-            {isPlayersLoading && <Spinner />}
+            {store.allPlayers.isPlayersLoading && <Spinner />}
             {noPlayersLoaded &&
               store.allPlayers.players.map((player, i) => (
                 <ListItem
@@ -66,7 +124,11 @@ const Main = observer(() => {
               ))}
             {noPlayersLoaded && (
               <div className={styles.paginationBlock}>
-                <Pagination onPageChange={getData} total={totalItems} />
+                <Pagination
+                  onPageChange={onPageChange}
+                  total={totalItems}
+                  currentPage={currentPage}
+                />
                 <div>
                   <p>{`Page ${currentPage}`}</p>
                   <p>

@@ -8,3 +8,9 @@ export const getPlayers = ({
     `/api/gameinfo/events/playerweaponfame?limit=${size}&offset=${offset}&range=${range}&weaponCategory=${weapon}`
   ).then((res) => res.json());
 };
+
+export const getWeapon = () => {
+  return fetch('/api/gameinfo/items/_weaponCategories').then((res) =>
+    res.json()
+  );
+};

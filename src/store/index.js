@@ -1,9 +1,11 @@
 import { createContext, useContext } from 'react';
-import allPlayers from './allPlayers';
+import AllPlayers from './allPlayers';
+import Weapon from './weapon';
 
 class RootStore {
   constructor() {
-    this.allPlayers = new allPlayers();
+    this.allPlayers = new AllPlayers();
+    this.weapon = new Weapon();
   }
 }
 
