@@ -7,11 +7,12 @@ const { Option } = Select;
 const CustomSelect = ({
   options = [],
   defaultValue,
-  isOpen = false,
+  isOpen,
   isLoading = false,
   label,
   placeholder = 'Select the option',
   onChange,
+  onFocus,
 }) => {
   const selectId = label.replace(/\s/, '-');
 
@@ -20,12 +21,13 @@ const CustomSelect = ({
       {!!label && <label htmlFor={selectId}>{label}</label>}
       <Select
         id={selectId}
-        defaultOpen={isOpen}
+        open={isOpen}
         loading={isLoading}
         style={{ width: '100%' }}
         placeholder={placeholder}
         value={defaultValue}
         onChange={onChange}
+        onFocus={onFocus}
       >
         {!!options.length &&
           options.map((el) => (

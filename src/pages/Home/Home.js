@@ -60,6 +60,14 @@ const Main = observer(() => {
     setRequstParams({ ...requestParams, timeRange: value });
   };
 
+  const onWeaponSelectFocus = () => {
+    store.filtersInfo.setWeaponOpen('resetOpenToDefault');
+  };
+
+  const onRangeSelectFocus = () => {
+    store.filtersInfo.setRangeOpen('resetOpenToDefault');
+  };
+
   const onDataUpdate = () => {
     getData({
       page: 1,
@@ -97,15 +105,19 @@ const Main = observer(() => {
             <Select
               label="Weapon Group"
               options={store.weapon.playerWeapon}
+              isOpen={store.filtersInfo.isWeaponSelectOpen}
               isLoading={!store.weapon.isWeaponLoaded}
               defaultValue={weaponCategory}
               onChange={onWeaponSelectChange}
+              onFocus={onWeaponSelectFocus}
             />
             <Select
               label="Time Range"
               options={timeRangeOptions}
+              isOpen={store.filtersInfo.isRangeSelectOpen}
               defaultValue={timeRange}
               onChange={onTimeSelectChange}
+              onFocus={onRangeSelectFocus}
             />
           </div>
           <ReloadButton onDataUpdate={onDataUpdate} />

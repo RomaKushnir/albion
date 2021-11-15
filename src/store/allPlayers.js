@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { getPlayers } from '../api';
 
-class allPlayers {
+class AllPlayers {
   constructor() {
     makeAutoObservable(this);
   }
@@ -22,4 +22,4 @@ class allPlayers {
   }
 }
 
-export default allPlayers;
+export default AllPlayers;
