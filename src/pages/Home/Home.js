@@ -29,10 +29,10 @@ const Main = observer(() => {
     timeRange: 'lastMonth',
   });
 
-  const [selectsState, setSelectState] = useState({
-    weapon: false,
-    range: false,
-  });
+  // const [selectsState, setSelectState] = useState({
+  //   weapon: false,
+  //   range: false,
+  // });
 
   const { currentPage, pageOffset, pageSize, weaponCategory, timeRange } =
     requestParams;
@@ -60,7 +60,11 @@ const Main = observer(() => {
   const onSelectChange = (value, select) => {
     if (select === 'weapon') {
       setRequstParams({ ...requestParams, weaponCategory: value });
-      // store.filtersInfo.setWeaponOpen(false);
+      // console.log('isWeaponSelectOpen', store.filtersInfo.isWeaponSelectOpen);
+      // console.log('selectsState', selectsState[select]);
+
+      // store.filtersInfo.setWeaponOpen(selectsState[select]);
+      // store.filtersInfo.setWeaponOpen('setToDefault');
     }
     if (select === 'range') {
       setRequstParams({ ...requestParams, timeRange: value });
@@ -68,18 +72,36 @@ const Main = observer(() => {
     }
   };
 
-  const onSelectFocus = (select) => {
-    if (select === 'weapon') store.filtersInfo.setWeaponOpen('setToDefault');
-    if (select === 'range') store.filtersInfo.setRangeOpen('setToDefault');
-    // if (select === 'weapon') store.filtersInfo.setWeaponOpen(true);
-    // if (select === 'range') store.filtersInfo.setRangeOpen(true);
+  const onSelectFocus = (e, select) => {
+    if (select === 'weapon') {
+      // console.log('isWeaponSelectOpen', store.filtersInfo.isWeaponSelectOpen);
+      // console.log('selectsState', selectsState[select]);
+      // store.filtersInfo.setWeaponOpen('setToDefault');
+      if (store.filtersInfo.isWeaponSelectOpen) {
+        //   console.log('isWeaponSelectOpen', store.filtersInfo.isWeaponSelectOpen);
+        // store.filtersInfo.setWeaponOpen(false);
+      }
+    }
+    // if (select === 'weapon') store.filtersInfo.setWeaponOpen('setToDefault');
+    // if (select === 'range') store.filtersInfo.setRangeOpen('setToDefault');
+
     // console.log('focus');
   };
 
-  const onSelectBlur = () => {};
+  const onSelectBlur = (e, select) => {
+    // e.target.focus();
+    // if (select === 'weapon') {
+    // }
+  };
 
   const onDropdownVisibleChange = (openState, select) => {
-    setSelectState({ ...selectsState, [select]: openState });
+    if (select === 'weapon') {
+      store.filtersInfo.setWeaponOpen(openState);
+    }
+    if (select === 'range') {
+      store.filtersInfo.setRangeOpen(openState);
+    }
+    // setSelectState({ ...selectsState, [select]: openState });
   };
 
   const onDataUpdate = () => {
@@ -119,16 +141,15 @@ const Main = observer(() => {
             <Select
               label="Weapon Group"
               className={{
-                'select-custom-open':
-                  selectsState.weapon || store.filtersInfo.isWeaponSelectOpen,
+                'select-custom-open': store.filtersInfo.isWeaponSelectOpen,
               }}
               options={store.weapon.playerWeapon}
               isOpen={store.filtersInfo.isWeaponSelectOpen}
               isLoading={!store.weapon.isWeaponLoaded}
               defaultValue={weaponCategory}
               onSelect={(val) => onSelectChange(val, 'weapon')}
-              onFocus={() => onSelectFocus('weapon')}
-              onBlur={() => onSelectBlur('weapon')}
+              onFocus={(e) => onSelectFocus(e, 'weapon')}
+              onBlur={(e) => onSelectBlur(e, 'weapon')}
               onDropdownVisibleChange={(v) =>
                 onDropdownVisibleChange(v, 'weapon')
               }
@@ -139,7 +160,7 @@ const Main = observer(() => {
               isOpen={store.filtersInfo.isRangeSelectOpen}
               defaultValue={timeRange}
               onSelect={(val) => onSelectChange(val, 'range')}
-              onFocus={() => onSelectFocus('range')}
+              onFocus={(e) => onSelectFocus(e, 'range')}
             />
           </div>
           <ReloadButton onDataUpdate={onDataUpdate} />

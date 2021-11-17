@@ -5,8 +5,8 @@ class FiltersInfo {
     makeAutoObservable(this);
   }
 
-  isWeaponSelectOpen = false;
-  isRangeSelectOpen = false;
+  isWeaponSelectOpen = undefined;
+  isRangeSelectOpen = undefined;
 
   setWeaponOpen(state) {
     this.isWeaponSelectOpen =
