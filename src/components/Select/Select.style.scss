@@ -1,0 +1,29 @@
+.ant-select-arrow {
+  transform: translate(-3px, -3px);
+  .anticon-down {
+    border-width: 6px;
+    border-color: transparent #c8c7c7 #c8c7c7 transparent;
+    border-style: solid;
+    transform-origin: 70% 70%;
+    transform: rotate(45deg);
+    svg {
+      display: none;
+    }
+  }
+}
+
+.ant-select-open {
+  .ant-select-arrow {
+    .anticon-down {
+      transform: rotate(225deg);
+    }
+  }
+}
+
+// .select-custom-open {
+//   .ant-select-arrow {
+//     .anticon-down {
+//       transform: rotate(225deg);
+//     }
+//   }
+// }

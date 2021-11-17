@@ -29,6 +29,11 @@ const Main = observer(() => {
     timeRange: 'lastMonth',
   });
 
+  // const [selectsState, setSelectState] = useState({
+  //   weapon: false,
+  //   range: false,
+  // });
+
   const { currentPage, pageOffset, pageSize, weaponCategory, timeRange } =
     requestParams;
 
@@ -52,21 +57,23 @@ const Main = observer(() => {
     return !!store.allPlayers.players.length;
   }, [store.allPlayers.players]);
 
-  const onWeaponSelectChange = (value) => {
-    setRequstParams({ ...requestParams, weaponCategory: value });
+  const onSelectChange = (value, select) => {
+    if (select === 'weapon') {
+      setRequstParams({ ...requestParams, weaponCategory: value });
+    }
+    if (select === 'range') {
+      setRequstParams({ ...requestParams, timeRange: value });
+    }
   };
 
-  const onTimeSelectChange = (value) => {
-    setRequstParams({ ...requestParams, timeRange: value });
+  const onSelectFocus = (select) => {
+    if (select === 'weapon') store.filtersInfo.setWeaponOpen('setToDefault');
+    if (select === 'range') store.filtersInfo.setRangeOpen('setToDefault');
   };
 
-  const onWeaponSelectFocus = () => {
-    store.filtersInfo.setWeaponOpen('resetOpenToDefault');
-  };
-
-  const onRangeSelectFocus = () => {
-    store.filtersInfo.setRangeOpen('resetOpenToDefault');
-  };
+  // const onDropdownVisibleChange = (openState, select) => {
+  //   setSelectState({ ...selectsState, [select]: openState });
+  // };
 
   const onDataUpdate = () => {
     getData({
@@ -104,20 +111,27 @@ const Main = observer(() => {
           <div className={styles.selectsWrapper}>
             <Select
               label="Weapon Group"
+              // className={{
+              //   'select-custom-open':
+              //     selectsState.weapon || store.filtersInfo.isWeaponSelectOpen,
+              // }}
               options={store.weapon.playerWeapon}
               isOpen={store.filtersInfo.isWeaponSelectOpen}
               isLoading={!store.weapon.isWeaponLoaded}
               defaultValue={weaponCategory}
-              onChange={onWeaponSelectChange}
-              onFocus={onWeaponSelectFocus}
+              onSelect={(val) => onSelectChange(val, 'weapon')}
+              onFocus={() => onSelectFocus('weapon')}
+              // onDropdownVisibleChange={(v) =>
+              //   onDropdownVisibleChange(v, 'weapon')
+              // }
             />
             <Select
               label="Time Range"
               options={timeRangeOptions}
               isOpen={store.filtersInfo.isRangeSelectOpen}
               defaultValue={timeRange}
-              onChange={onTimeSelectChange}
-              onFocus={onRangeSelectFocus}
+              onSelect={(val) => onSelectChange(val, 'range')}
+              onFocus={() => onSelectFocus('range')}
             />
           </div>
           <ReloadButton onDataUpdate={onDataUpdate} />

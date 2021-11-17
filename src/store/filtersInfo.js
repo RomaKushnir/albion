@@ -8,14 +8,22 @@ class FiltersInfo {
   isWeaponSelectOpen = false;
   isRangeSelectOpen = false;
 
-  setWeaponOpen(resetOpen) {
+  setWeaponOpen(state) {
     this.isWeaponSelectOpen =
-      resetOpen === 'resetOpenToDefault' ? undefined : !this.isWeaponSelectOpen;
+      state === 'setToDefault'
+        ? undefined
+        : state !== undefined
+        ? state
+        : !this.isWeaponSelectOpen;
   }
 
-  setRangeOpen(resetOpen) {
+  setRangeOpen(state) {
     this.isRangeSelectOpen =
-      resetOpen === 'resetOpenToDefault' ? undefined : !this.isRangeSelectOpen;
+      state === 'setToDefault'
+        ? undefined
+        : state !== undefined
+        ? state
+        : !this.isRangeSelectOpen;
   }
 }
 
