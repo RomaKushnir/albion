@@ -12,18 +12,18 @@
   }
 }
 
-.ant-select-open {
-  .ant-select-arrow {
-    .anticon-down {
-      transform: rotate(225deg);
-    }
-  }
-}
-
-// .select-custom-open {
+// .ant-select-open {
 //   .ant-select-arrow {
 //     .anticon-down {
 //       transform: rotate(225deg);
 //     }
 //   }
 // }
+
+.select-custom-open {
+  .ant-select-arrow {
+    .anticon-down {
+      transform: rotate(225deg);
+    }
+  }
+}

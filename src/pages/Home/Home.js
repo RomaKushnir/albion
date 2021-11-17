@@ -25,14 +25,14 @@ const Main = observer(() => {
     currentPage: 1,
     pageOffset: 0,
     pageSize: 10,
-    weaponCategory: 'bow',
+    weaponCategory: 'Bow',
     timeRange: 'lastMonth',
   });
 
-  // const [selectsState, setSelectState] = useState({
-  //   weapon: false,
-  //   range: false,
-  // });
+  const [selectsState, setSelectState] = useState({
+    weapon: false,
+    range: false,
+  });
 
   const { currentPage, pageOffset, pageSize, weaponCategory, timeRange } =
     requestParams;
@@ -60,20 +60,27 @@ const Main = observer(() => {
   const onSelectChange = (value, select) => {
     if (select === 'weapon') {
       setRequstParams({ ...requestParams, weaponCategory: value });
+      // store.filtersInfo.setWeaponOpen(false);
     }
     if (select === 'range') {
       setRequstParams({ ...requestParams, timeRange: value });
+      // store.filtersInfo.setRangeOpen(false);
     }
   };
 
   const onSelectFocus = (select) => {
     if (select === 'weapon') store.filtersInfo.setWeaponOpen('setToDefault');
     if (select === 'range') store.filtersInfo.setRangeOpen('setToDefault');
+    // if (select === 'weapon') store.filtersInfo.setWeaponOpen(true);
+    // if (select === 'range') store.filtersInfo.setRangeOpen(true);
+    // console.log('focus');
   };
 
-  // const onDropdownVisibleChange = (openState, select) => {
-  //   setSelectState({ ...selectsState, [select]: openState });
-  // };
+  const onSelectBlur = () => {};
+
+  const onDropdownVisibleChange = (openState, select) => {
+    setSelectState({ ...selectsState, [select]: openState });
+  };
 
   const onDataUpdate = () => {
     getData({
@@ -111,19 +118,20 @@ const Main = observer(() => {
           <div className={styles.selectsWrapper}>
             <Select
               label="Weapon Group"
-              // className={{
-              //   'select-custom-open':
-              //     selectsState.weapon || store.filtersInfo.isWeaponSelectOpen,
-              // }}
+              className={{
+                'select-custom-open':
+                  selectsState.weapon || store.filtersInfo.isWeaponSelectOpen,
+              }}
               options={store.weapon.playerWeapon}
               isOpen={store.filtersInfo.isWeaponSelectOpen}
               isLoading={!store.weapon.isWeaponLoaded}
               defaultValue={weaponCategory}
               onSelect={(val) => onSelectChange(val, 'weapon')}
               onFocus={() => onSelectFocus('weapon')}
-              // onDropdownVisibleChange={(v) =>
-              //   onDropdownVisibleChange(v, 'weapon')
-              // }
+              onBlur={() => onSelectBlur('weapon')}
+              onDropdownVisibleChange={(v) =>
+                onDropdownVisibleChange(v, 'weapon')
+              }
             />
             <Select
               label="Time Range"
