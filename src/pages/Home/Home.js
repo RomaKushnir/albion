@@ -29,11 +29,6 @@ const Main = observer(() => {
     timeRange: 'lastMonth',
   });
 
-  // const [selectsState, setSelectState] = useState({
-  //   weapon: false,
-  //   range: false,
-  // });
-
   const { currentPage, pageOffset, pageSize, weaponCategory, timeRange } =
     requestParams;
 
@@ -60,48 +55,14 @@ const Main = observer(() => {
   const onSelectChange = (value, select) => {
     if (select === 'weapon') {
       setRequstParams({ ...requestParams, weaponCategory: value });
-      // console.log('isWeaponSelectOpen', store.filtersInfo.isWeaponSelectOpen);
-      // console.log('selectsState', selectsState[select]);
-
-      // store.filtersInfo.setWeaponOpen(selectsState[select]);
-      // store.filtersInfo.setWeaponOpen('setToDefault');
     }
     if (select === 'range') {
       setRequstParams({ ...requestParams, timeRange: value });
-      // store.filtersInfo.setRangeOpen(false);
     }
-  };
-
-  const onSelectFocus = (e, select) => {
-    if (select === 'weapon') {
-      // console.log('isWeaponSelectOpen', store.filtersInfo.isWeaponSelectOpen);
-      // console.log('selectsState', selectsState[select]);
-      // store.filtersInfo.setWeaponOpen('setToDefault');
-      if (store.filtersInfo.isWeaponSelectOpen) {
-        //   console.log('isWeaponSelectOpen', store.filtersInfo.isWeaponSelectOpen);
-        // store.filtersInfo.setWeaponOpen(false);
-      }
-    }
-    // if (select === 'weapon') store.filtersInfo.setWeaponOpen('setToDefault');
-    // if (select === 'range') store.filtersInfo.setRangeOpen('setToDefault');
-
-    // console.log('focus');
-  };
-
-  const onSelectBlur = (e, select) => {
-    // e.target.focus();
-    // if (select === 'weapon') {
-    // }
   };
 
   const onDropdownVisibleChange = (openState, select) => {
-    if (select === 'weapon') {
-      store.filtersInfo.setWeaponOpen(openState);
-    }
-    if (select === 'range') {
-      store.filtersInfo.setRangeOpen(openState);
-    }
-    // setSelectState({ ...selectsState, [select]: openState });
+    store.filtersInfo.setSelectOpen('antState', select, openState);
   };
 
   const onDataUpdate = () => {
@@ -140,16 +101,11 @@ const Main = observer(() => {
           <div className={styles.selectsWrapper}>
             <Select
               label="Weapon Group"
-              className={{
-                'select-custom-open': store.filtersInfo.isWeaponSelectOpen,
-              }}
               options={store.weapon.playerWeapon}
-              isOpen={store.filtersInfo.isWeaponSelectOpen}
+              isOpen={store.filtersInfo.isSelectOpen.weapon}
               isLoading={!store.weapon.isWeaponLoaded}
               defaultValue={weaponCategory}
               onSelect={(val) => onSelectChange(val, 'weapon')}
-              onFocus={(e) => onSelectFocus(e, 'weapon')}
-              onBlur={(e) => onSelectBlur(e, 'weapon')}
               onDropdownVisibleChange={(v) =>
                 onDropdownVisibleChange(v, 'weapon')
               }
@@ -157,10 +113,12 @@ const Main = observer(() => {
             <Select
               label="Time Range"
               options={timeRangeOptions}
-              isOpen={store.filtersInfo.isRangeSelectOpen}
+              isOpen={store.filtersInfo.isSelectOpen.range}
               defaultValue={timeRange}
               onSelect={(val) => onSelectChange(val, 'range')}
-              onFocus={(e) => onSelectFocus(e, 'range')}
+              onDropdownVisibleChange={(v) =>
+                onDropdownVisibleChange(v, 'range')
+              }
             />
           </div>
           <ReloadButton onDataUpdate={onDataUpdate} />

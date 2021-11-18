@@ -9,7 +9,7 @@ const FiltersInfo = () => {
       <span>Best</span>&nbsp;
       <span
         className={styles.clickable}
-        onClick={() => store.filtersInfo.setWeaponOpen()}
+        onClick={() => store.filtersInfo.setSelectOpen('click', 'weapon')}
       >
         {'bow'}
       </span>
@@ -17,7 +17,7 @@ const FiltersInfo = () => {
       <span>players within</span>&nbsp;
       <span
         className={styles.clickable}
-        onClick={() => store.filtersInfo.setRangeOpen()}
+        onClick={() => store.filtersInfo.setSelectOpen('click', 'range')}
       >
         {'this week'}
       </span>

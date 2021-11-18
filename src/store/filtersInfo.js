@@ -5,25 +5,29 @@ class FiltersInfo {
     makeAutoObservable(this);
   }
 
-  isWeaponSelectOpen = undefined;
-  isRangeSelectOpen = undefined;
+  isSelectOpen = {
+    weapon: undefined,
+    range: undefined,
+  };
 
-  setWeaponOpen(state) {
-    this.isWeaponSelectOpen =
-      state === 'setToDefault'
-        ? undefined
-        : state !== undefined
-        ? state
-        : !this.isWeaponSelectOpen;
-  }
+  prevStateOpen = {
+    weapon: undefined,
+    range: undefined,
+  };
 
-  setRangeOpen(state) {
-    this.isRangeSelectOpen =
-      state === 'setToDefault'
-        ? undefined
-        : state !== undefined
-        ? state
-        : !this.isRangeSelectOpen;
+  setSelectOpen(handler, select, state) {
+    if (handler === 'antState') {
+      this.isSelectOpen[select] = state;
+    }
+
+    if (handler === 'click') {
+      this.isSelectOpen[select] =
+        this.prevStateOpen[select] === false
+          ? undefined
+          : !this.isSelectOpen[select];
+    }
+
+    this.prevStateOpen[select] = state;
   }
 }
 
