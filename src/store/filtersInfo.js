@@ -1,9 +1,19 @@
-import { makeAutoObservable } from 'mobx';
+import { action, makeAutoObservable, observable } from 'mobx';
 
 class FiltersInfo {
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {
+      selectValue: observable,
+      isSelectOpen: observable,
+      setSelectValue: action,
+      setSelectOpen: action,
+    });
   }
+
+  selectValue = {
+    weapon: '',
+    range: '',
+  };
 
   isSelectOpen = {
     weapon: undefined,
@@ -15,19 +25,14 @@ class FiltersInfo {
     range: undefined,
   };
 
-  setSelectOpen(handler, select, state) {
-    if (handler === 'antState') {
-      this.isSelectOpen[select] = state;
-    }
+  setSelectValue(select, value) {
+    this.selectValue[select] = value;
+  }
 
-    if (handler === 'click') {
-      this.isSelectOpen[select] =
-        this.prevStateOpen[select] === false
-          ? undefined
-          : !this.isSelectOpen[select];
-    }
+  setSelectOpen(select, state) {
+    this.prevStateOpen[select] = this.isSelectOpen[select];
 
-    this.prevStateOpen[select] = state;
+    this.isSelectOpen[select] = state;
   }
 }
 
