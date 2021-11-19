@@ -3,36 +3,33 @@ import { action, makeAutoObservable, observable } from 'mobx';
 class FiltersInfo {
   constructor() {
     makeAutoObservable(this, {
-      selectValue: observable,
-      isSelectOpen: observable,
+      selectState: observable,
       setSelectValue: action,
       setSelectOpen: action,
     });
   }
 
-  selectValue = {
-    weapon: '',
-    range: '',
-  };
-
-  isSelectOpen = {
-    weapon: undefined,
-    range: undefined,
-  };
-
-  prevStateOpen = {
-    weapon: undefined,
-    range: undefined,
+  selectState = {
+    weapon: {
+      value: '',
+      open: false,
+      timestamp: null,
+    },
+    range: {
+      value: '',
+      open: false,
+      timestamp: null,
+    },
   };
 
   setSelectValue(select, value) {
-    this.selectValue[select] = value;
+    this.selectState[select].value = value;
   }
 
   setSelectOpen(select, state) {
-    this.prevStateOpen[select] = this.isSelectOpen[select];
+    this.selectState[select].open = state;
 
-    this.isSelectOpen[select] = state;
+    this.selectState[select].timestamp = new Date().getTime();
   }
 }
 

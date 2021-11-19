@@ -106,7 +106,7 @@ const Main = observer(() => {
             <Select
               label="Weapon Group"
               options={store.weapon.playerWeapon}
-              isOpen={store.filtersInfo.isSelectOpen.weapon}
+              isOpen={store.filtersInfo.selectState.weapon.open}
               isLoading={!store.weapon.isWeaponLoaded}
               defaultValue={weapon}
               onSelect={(val) => onSelectChange('weapon', val)}
@@ -117,7 +117,7 @@ const Main = observer(() => {
             <Select
               label="Time Range"
               options={timeRangeOptions}
-              isOpen={store.filtersInfo.isSelectOpen.range}
+              isOpen={store.filtersInfo.selectState.range.open}
               defaultValue={range}
               onSelect={(val) => onSelectChange('range', val)}
               onDropdownVisibleChange={(v) =>

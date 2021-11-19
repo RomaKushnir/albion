@@ -4,12 +4,12 @@ import { useStore } from 'store';
 const FiltersInfo = () => {
   const store = useStore();
 
-  const clickStateHandler = (select) => {
-    store.filtersInfo.prevStateOpen[select]
-      ? store.filtersInfo.setSelectOpen(select, undefined)
+  const clickStateHandler = (e, select) => {
+    new Date().getTime() - store.filtersInfo.selectState[select].timestamp < 200
+      ? e.preventDefault()
       : store.filtersInfo.setSelectOpen(
           select,
-          !store.filtersInfo.isSelectOpen[select]
+          !store.filtersInfo.selectState[select].open
         );
   };
 
@@ -18,17 +18,17 @@ const FiltersInfo = () => {
       <span>Best</span>&nbsp;
       <span
         className={styles.clickable}
-        onClick={() => clickStateHandler('weapon')}
+        onClick={(e) => clickStateHandler(e, 'weapon')}
       >
-        {store.filtersInfo.selectValue.weapon}
+        {store.filtersInfo.selectState.weapon.value}
       </span>
       &nbsp;
       <span>players within</span>&nbsp;
       <span
         className={styles.clickable}
-        onClick={() => clickStateHandler('range')}
+        onClick={(e) => clickStateHandler(e, 'range')}
       >
-        {store.filtersInfo.selectValue.range}
+        {store.filtersInfo.selectState.range.value}
       </span>
       &nbsp;
       <span>by total kill fame</span>
