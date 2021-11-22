@@ -9,13 +9,14 @@ import ReloadButton from './components/ReloadButton';
 import ListItem from './components/ListItem';
 import Pagination from 'components/Pagination';
 import Spinner from 'components/Spinner';
+import { toCamelCase } from '../../utils/stringHelpers';
 
 const totalItems = 100;
 const timeRangeOptions = [
   { id: 'week', name: 'week' },
   { id: 'month', name: 'month' },
-  { id: 'lastWeek', name: 'lastWeek' },
-  { id: 'lastMonth', name: 'lastMonth' },
+  { id: 'lastWeek', name: 'last week' },
+  { id: 'lastMonth', name: 'last month' },
 ];
 
 const Main = observer(() => {
@@ -25,15 +26,16 @@ const Main = observer(() => {
     currentPage: 1,
     pageOffset: 0,
     pageSize: 10,
-    weaponCategory: 'bow',
-    timeRange: 'lastMonth',
+    weapon: 'Bow',
+    range: timeRangeOptions[3].name,
   });
 
-  const { currentPage, pageOffset, pageSize, weaponCategory, timeRange } =
-    requestParams;
+  const { currentPage, pageOffset, pageSize, weapon, range } = requestParams;
 
   const getData = useCallback(
     ({ page = 1, size = 10, offset = 0, weapon, range }) => {
+      range = toCamelCase(range); //transform range for correct request value
+
       store.allPlayers
         .fetchPlayers({ offset, size, weapon, range })
         .then(() => {
@@ -52,12 +54,14 @@ const Main = observer(() => {
     return !!store.allPlayers.players.length;
   }, [store.allPlayers.players]);
 
-  const onWeaponSelectChange = (value) => {
-    setRequstParams({ ...requestParams, weaponCategory: value });
+  const onSelectChange = (select, value) => {
+    setRequstParams({ ...requestParams, [select]: value });
+
+    store.filtersInfo.setSelectValue(select, value);
   };
 
-  const onTimeSelectChange = (value) => {
-    setRequstParams({ ...requestParams, timeRange: value });
+  const onDropdownVisibleChange = (select, openState) => {
+    store.filtersInfo.setSelectOpen(select, openState);
   };
 
   const onDataUpdate = () => {
@@ -65,8 +69,8 @@ const Main = observer(() => {
       page: 1,
       offset: 0,
       size: pageSize,
-      weapon: weaponCategory,
-      range: timeRange,
+      weapon: weapon,
+      range: range,
     });
   };
 
@@ -75,10 +79,15 @@ const Main = observer(() => {
       page: page,
       size: size,
       offset: offset,
-      weapon: weaponCategory,
-      range: timeRange,
+      weapon: weapon,
+      range: range,
     });
   };
+
+  useEffect(() => {
+    store.filtersInfo.setSelectValue('weapon', weapon);
+    store.filtersInfo.setSelectValue('range', range);
+  }, [store.filtersInfo, weapon, range]);
 
   useEffect(() => {
     store.weapon.fetchWeapon();
@@ -97,15 +106,23 @@ const Main = observer(() => {
             <Select
               label="Weapon Group"
               options={store.weapon.playerWeapon}
+              isOpen={store.filtersInfo.selectState.weapon.open}
               isLoading={!store.weapon.isWeaponLoaded}
-              defaultValue={weaponCategory}
-              onChange={onWeaponSelectChange}
+              defaultValue={weapon}
+              onSelect={(val) => onSelectChange('weapon', val)}
+              onDropdownVisibleChange={(v) =>
+                onDropdownVisibleChange('weapon', v)
+              }
             />
             <Select
               label="Time Range"
               options={timeRangeOptions}
-              defaultValue={timeRange}
-              onChange={onTimeSelectChange}
+              isOpen={store.filtersInfo.selectState.range.open}
+              defaultValue={range}
+              onSelect={(val) => onSelectChange('range', val)}
+              onDropdownVisibleChange={(v) =>
+                onDropdownVisibleChange('range', v)
+              }
             />
           </div>
           <ReloadButton onDataUpdate={onDataUpdate} />

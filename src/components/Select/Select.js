@@ -1,17 +1,21 @@
 import { Select } from 'antd';
 import styles from './Select.module.scss';
-import './Select.scss';
+import './Select.style.scss';
 
 const { Option } = Select;
 
 const CustomSelect = ({
   options = [],
   defaultValue,
-  isOpen = false,
+  isOpen,
   isLoading = false,
   label,
+  className,
   placeholder = 'Select the option',
-  onChange,
+  onSelect,
+  onFocus,
+  onBlur,
+  onDropdownVisibleChange,
 }) => {
   const selectId = label.replace(/\s/, '-');
 
@@ -20,12 +24,16 @@ const CustomSelect = ({
       {!!label && <label htmlFor={selectId}>{label}</label>}
       <Select
         id={selectId}
-        defaultOpen={isOpen}
+        className={className}
+        open={isOpen}
         loading={isLoading}
         style={{ width: '100%' }}
         placeholder={placeholder}
         value={defaultValue}
-        onChange={onChange}
+        onSelect={onSelect}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        onDropdownVisibleChange={onDropdownVisibleChange}
       >
         {!!options.length &&
           options.map((el) => (
