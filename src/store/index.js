@@ -2,11 +2,13 @@ import { createContext, useContext } from 'react';
 import AllPlayers from './allPlayers';
 import Weapon from './weapon';
 import FiltersInfo from './filtersInfo';
+import Error from './error';
 
 class RootStore {
   constructor() {
-    this.allPlayers = new AllPlayers();
-    this.weapon = new Weapon();
+    this.error = new Error();
+    this.allPlayers = new AllPlayers(this);
+    this.weapon = new Weapon(this);
     this.filtersInfo = new FiltersInfo();
   }
 }
