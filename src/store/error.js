@@ -3,7 +3,7 @@ import { action, makeObservable, observable } from 'mobx';
 class Error {
   constructor() {
     makeObservable(this, {
-      requestError: observable.ref,
+      requestError: observable,
       setRequestError: action,
       resetRequestError: action,
     });

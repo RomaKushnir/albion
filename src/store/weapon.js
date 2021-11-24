@@ -10,8 +10,8 @@ class Weapon {
 
   playerWeapon = [];
 
-  fetchWeapon() {
-    getWeapon()
+  async fetchWeapon() {
+    await getWeapon()
       .then((data) => this.setWeapon(data))
       .catch((err) => {
         this.errorStore.setRequestError(err);

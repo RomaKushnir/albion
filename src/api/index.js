@@ -5,7 +5,7 @@ export const getPlayers = ({
   weapon = 'bow',
 }) => {
   return fetch(
-    `1/api/gameinfo/events/playerweaponfame?limit=${size}&offset=${offset}&range=${range}&weaponCategory=${weapon}`
+    `/api/gameinfo/events/playerweaponfame?limit=${size}&offset=${offset}&range=${range}&weaponCategory=${weapon}`
   );
 };
 
