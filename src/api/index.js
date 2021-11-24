@@ -11,23 +11,23 @@ export const getPlayers = ({
 
 export const getWeapon = () => {
   return new Promise((resolve, reject) => {
-    fetch('1/api/gameinfo/items/_weaponCategories')
-      .then((res) => {
-        return new Promise((resolve) =>
-          res.json().then((json) => {
-            return resolve({
-              isOk: res.ok,
-              body: json,
-            });
-          })
-        );
-      })
-      .then(({ isOk, body }) => {
-        if (isOk) {
-          resolve(body);
-        } else {
-          reject(body);
-        }
-      });
+    fetch('/api/gameinfo/items/_weaponCategories').then((res) => {
+      if (res.ok) {
+        resolve(res.json());
+      } else {
+        reject(`${res.status} ${res.statusText}`);
+      }
+    });
   });
 };
+
+// const parseJSON = (res) => {
+//   return new Promise((resolve) =>
+//     res.json().then((json) => {
+//       return resolve({
+//         isOk: res.ok,
+//         body: json,
+//       });
+//     })
+//   );
+// };

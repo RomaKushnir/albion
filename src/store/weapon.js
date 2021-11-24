@@ -15,7 +15,7 @@ class Weapon {
       .then((data) => this.setWeapon(data))
       .catch((err) => {
         this.errorStore.setRequestError(err);
-        console.error(err.code, err.message);
+        console.error(err);
       });
   }
 
