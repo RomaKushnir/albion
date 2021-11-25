@@ -19,18 +19,11 @@ class AllPlayers {
   async fetchPlayers(params = {}) {
     this.isPlayersLoading = true;
 
-    return getPlayers(params)
-      .then(async (res) => {
-        if (res.ok) {
-          const data = await res.json();
-          this.setPlayers(data);
-        } else {
-          throw new Error(`${res.status} ${res.statusText}`);
-        }
-      })
+    return await getPlayers(params)
+      .then((data) => this.setPlayers(data))
       .catch((err) => {
         this.errorStore.setRequestError(err);
-        console.error(err);
+        console.error('Error: ', err.code, err.message);
       });
   }
 

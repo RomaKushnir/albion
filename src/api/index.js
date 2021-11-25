@@ -1,3 +1,5 @@
+import { responseHandler } from '../utils/apiHandlers';
+
 export const getPlayers = ({
   size = 10,
   offset = 0,
@@ -6,44 +8,9 @@ export const getPlayers = ({
 }) => {
   return fetch(
     `/api/gameinfo/events/playerweaponfame?limit=${size}&offset=${offset}&range=${range}&weaponCategory=${weapon}`
-  );
+  ).then(responseHandler);
 };
 
 export const getWeapon = () => {
-  return new Promise((resolve, reject) => {
-    fetch('/api/gameinfo/items/_weaponCategories/1')
-      .then(parseJSON)
-      .then(({ status, statusText, body }) => {
-        if (statusText === 'OK' && status === 200) {
-          resolve(body);
-        } else {
-          reject(body);
-        }
-      });
-    //previous solution
-    // .then((res) => {
-    //   return new Promise((resolve, reject) => {
-    //     console.log('request response', res);
-    //     if (res.statusText === 'OK' && res.status === 200) {
-    //       console.log('weapon resolve', res);
-    //       resolve(res.json());
-    //     } else {
-    //       console.log('weapon reject', res);
-    //       reject(`${res.status} ${res.statusText}`);
-    //     }
-    //   });
-    // })
-  });
-};
-
-const parseJSON = async (res) => {
-  return await new Promise((resolve) =>
-    res.json().then((json) => {
-      return resolve({
-        status: res.status,
-        statusText: res.statusText,
-        body: json,
-      });
-    })
-  );
+  return fetch('/api/gameinfo/items/_weaponCategories').then(responseHandler);
 };
