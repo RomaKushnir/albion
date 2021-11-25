@@ -4,13 +4,13 @@ export const responseHandler = (res) => {
       .json()
       .then((json) => {
         return {
+          ok: res.ok,
           status: res.status,
-          statusText: res.statusText,
           body: json,
         };
       })
-      .then(({ status, statusText, body }) => {
-        if (statusText === 'OK' && status === 200) {
+      .then(({ ok, status, body }) => {
+        if (ok && status === 200) {
           resolve(body);
         } else {
           reject(body);
