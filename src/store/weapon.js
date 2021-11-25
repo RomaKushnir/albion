@@ -12,10 +12,12 @@ class Weapon {
 
   async fetchWeapon() {
     await getWeapon()
-      .then((data) => this.setWeapon(data))
+      .then((data) => {
+        this.setWeapon(data);
+      })
       .catch((err) => {
         this.errorStore.setRequestError(err);
-        console.error(err);
+        console.error('Error: ', err.code, err.message);
       });
   }
 
