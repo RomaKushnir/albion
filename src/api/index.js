@@ -36,11 +36,12 @@ export const getWeapon = () => {
   });
 };
 
-const parseJSON = (res) => {
-  return new Promise((resolve) =>
+const parseJSON = async (res) => {
+  return await new Promise((resolve) =>
     res.json().then((json) => {
       return resolve({
-        isOk: res.ok,
+        status: res.status,
+        statusText: res.statusText,
         body: json,
       });
     })
