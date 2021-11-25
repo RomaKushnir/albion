@@ -1,5 +1,4 @@
 export const responseHandler = async (res) => {
-  console.log('res', res);
   return await res
     .json()
     .then((json) => {
@@ -10,7 +9,6 @@ export const responseHandler = async (res) => {
       };
     })
     .then(({ ok, status, body }) => {
-      console.log('res data', ok, status, body);
       return new Promise((resolve, reject) => {
         if (ok && status === 200) {
           resolve(body);
