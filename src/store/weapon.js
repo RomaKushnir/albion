@@ -17,7 +17,7 @@ class Weapon {
       })
       .catch((err) => {
         this.errorStore.setRequestError(err);
-        console.error('Error: ', err.code, err.message);
+        console.error('Request error: ', err);
       });
   }
 

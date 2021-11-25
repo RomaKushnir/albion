@@ -23,7 +23,7 @@ class AllPlayers {
       .then((data) => this.setPlayers(data))
       .catch((err) => {
         this.errorStore.setRequestError(err);
-        console.error('Error: ', err.code, err.message);
+        console.error('Request error: ', err);
       });
   }
 
