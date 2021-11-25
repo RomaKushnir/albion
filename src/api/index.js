@@ -12,5 +12,5 @@ export const getPlayers = ({
 };
 
 export const getWeapon = () => {
-  return fetch('/api/gameinfo/items/_weaponCategories').then(responseHandler);
+  return fetch('/api/gameinfo/items/_weaponCategories/1').then(responseHandler);
 };
