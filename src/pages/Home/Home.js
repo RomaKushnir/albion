@@ -150,6 +150,7 @@ const Main = observer(() => {
                   onPageChange={onPageChange}
                   total={totalItems}
                   currentPage={page}
+                  pageSize={size}
                 />
                 <div>
                   <p>{`Page ${page}`}</p>
