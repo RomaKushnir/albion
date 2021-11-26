@@ -1,19 +1,30 @@
-import { makeAutoObservable } from 'mobx';
+import { makeObservable, observable, action } from 'mobx';
 import { getPlayers } from '../api';
 
 class AllPlayers {
-  constructor() {
-    makeAutoObservable(this);
+  constructor(rootStore) {
+    this.errorStore = rootStore.error;
+
+    makeObservable(this, {
+      players: observable,
+      isPlayersLoading: observable,
+      fetchPlayers: action,
+      setPlayers: action,
+    });
   }
 
   players = [];
   isPlayersLoading = false;
 
-  fetchPlayers(params = {}) {
+  async fetchPlayers(params = {}) {
     this.isPlayersLoading = true;
-    return getPlayers(params).then((data) => {
-      this.setPlayers(data);
-    });
+
+    return await getPlayers(params)
+      .then((data) => this.setPlayers(data))
+      .catch((err) => {
+        this.errorStore.setRequestError(err);
+        console.error('Request error: ', err.code, err.message);
+      });
   }
 
   setPlayers(data) {

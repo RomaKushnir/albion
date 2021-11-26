@@ -5,7 +5,7 @@ import styles from './Home.module.scss';
 import PageWrapper from 'components/PageWrapper';
 import FiltersInfo from './components/FiltersInfo';
 import Select from 'components/Select';
-import ReloadButton from './components/ReloadButton';
+import ReloadButton from '../../components/ReloadButton';
 import ListItem from './components/ListItem';
 import Pagination from 'components/Pagination';
 import Spinner from 'components/Spinner';
@@ -23,14 +23,14 @@ const Main = observer(() => {
   const store = useStore();
 
   const [requestParams, setRequstParams] = useState({
-    currentPage: 1,
-    pageOffset: 0,
-    pageSize: 10,
+    page: 1,
+    offset: 0,
+    size: 10,
     weapon: 'Bow',
     range: timeRangeOptions[3].name,
   });
 
-  const { currentPage, pageOffset, pageSize, weapon, range } = requestParams;
+  const { page, offset, size, weapon, range } = requestParams;
 
   const getData = useCallback(
     ({ page = 1, size = 10, offset = 0, weapon, range }) => {
@@ -41,9 +41,9 @@ const Main = observer(() => {
         .then(() => {
           setRequstParams({
             ...requestParams,
-            currentPage: page,
-            pageOffset: offset,
-            pageSize: size,
+            page,
+            offset,
+            size,
           });
         });
     },
@@ -68,20 +68,25 @@ const Main = observer(() => {
     getData({
       page: 1,
       offset: 0,
-      size: pageSize,
-      weapon: weapon,
-      range: range,
+      size,
+      weapon,
+      range,
     });
   };
 
   const onPageChange = ({ page, size, offset }) => {
     getData({
-      page: page,
-      size: size,
-      offset: offset,
-      weapon: weapon,
-      range: range,
+      page,
+      size,
+      offset,
+      weapon,
+      range,
     });
+  };
+
+  const onPageReload = () => {
+    getData(requestParams);
+    store.weapon.fetchWeapon();
   };
 
   useEffect(() => {
@@ -95,7 +100,7 @@ const Main = observer(() => {
   }, [store.allPlayers, store.weapon]);
 
   return (
-    <PageWrapper>
+    <PageWrapper errorHandler={onPageReload}>
       <header className={styles.container}>
         <h1>ALBION ONLINE LEADERBOARDS</h1>
         <FiltersInfo />
@@ -125,7 +130,7 @@ const Main = observer(() => {
               }
             />
           </div>
-          <ReloadButton onDataUpdate={onDataUpdate} />
+          <ReloadButton text={'Update Leaderboard'} onUpdate={onDataUpdate} />
         </section>
         <section className={styles.listBlock}>
           <h3>Leaderboard</h3>
@@ -134,9 +139,9 @@ const Main = observer(() => {
             {noPlayersLoaded &&
               store.allPlayers.players.map((player, i) => (
                 <ListItem
-                  key={pageOffset + i + 1}
+                  key={offset + i + 1}
                   player={player}
-                  position={pageOffset + i + 1}
+                  position={offset + i + 1}
                 />
               ))}
             {noPlayersLoaded && (
@@ -144,12 +149,13 @@ const Main = observer(() => {
                 <Pagination
                   onPageChange={onPageChange}
                   total={totalItems}
-                  currentPage={currentPage}
+                  currentPage={page}
+                  pageSize={size}
                 />
                 <div>
-                  <p>{`Page ${currentPage}`}</p>
+                  <p>{`Page ${page}`}</p>
                   <p>
-                    {`Showing ${pageOffset + 1}-${pageOffset + pageSize}
+                    {`Showing ${offset + 1}-${offset + size}
                       out of ${totalItems}`}
                   </p>
                 </div>

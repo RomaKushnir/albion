@@ -1,3 +1,5 @@
+import { responseHandler } from '../utils/apiHandlers';
+
 export const getPlayers = ({
   size = 10,
   offset = 0,
@@ -6,11 +8,9 @@ export const getPlayers = ({
 }) => {
   return fetch(
     `/api/gameinfo/events/playerweaponfame?limit=${size}&offset=${offset}&range=${range}&weaponCategory=${weapon}`
-  ).then((res) => res.json());
+  ).then(responseHandler);
 };
 
 export const getWeapon = () => {
-  return fetch('/api/gameinfo/items/_weaponCategories').then((res) =>
-    res.json()
-  );
+  return fetch('/api/gameinfo/items/_weaponCategories').then(responseHandler);
 };

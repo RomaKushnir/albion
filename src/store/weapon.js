@@ -1,15 +1,28 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 import { getWeapon } from 'api';
 
 class Weapon {
-  constructor() {
+  constructor(rootStore) {
+    this.errorStore = rootStore.error;
+
     makeAutoObservable(this);
   }
 
   playerWeapon = [];
 
-  fetchWeapon() {
-    getWeapon().then((data) => runInAction(() => (this.playerWeapon = data)));
+  async fetchWeapon() {
+    await getWeapon()
+      .then((data) => {
+        this.setWeapon(data);
+      })
+      .catch((err) => {
+        this.errorStore.setRequestError(err);
+        console.error('Request error: ', err.code, err.message);
+      });
+  }
+
+  setWeapon(data) {
+    this.playerWeapon = data;
   }
 
   get isWeaponLoaded() {

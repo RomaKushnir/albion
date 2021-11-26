@@ -5,6 +5,7 @@ const FiltersInfo = () => {
   const store = useStore();
 
   const clickStateHandler = (e, select) => {
+    //disable click when it is done on text so only select blur event to be performed
     new Date().getTime() - store.filtersInfo.selectState[select].timestamp < 200
       ? e.preventDefault()
       : store.filtersInfo.setSelectOpen(
