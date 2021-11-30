@@ -110,7 +110,7 @@ const Main = observer(() => {
           <div className={styles.selectsWrapper}>
             <Select
               label="Weapon Group"
-              options={store.weapon.playerWeapon}
+              options={store.weapon.filtersWeapon}
               isOpen={store.filtersInfo.selectState.weapon.open}
               isLoading={!store.weapon.isWeaponLoaded}
               defaultValue={weapon}

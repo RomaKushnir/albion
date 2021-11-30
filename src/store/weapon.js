@@ -8,7 +8,7 @@ class Weapon {
     makeAutoObservable(this);
   }
 
-  playerWeapon = [];
+  filtersWeapon = [];
 
   async fetchWeapon() {
     await getWeapon()
@@ -22,11 +22,11 @@ class Weapon {
   }
 
   setWeapon(data) {
-    this.playerWeapon = data;
+    this.filtersWeapon = data;
   }
 
   get isWeaponLoaded() {
-    return !!this.playerWeapon.length;
+    return !!this.filtersWeapon.length;
   }
 }
 
