@@ -129,18 +129,24 @@ const Player = observer(() => {
                       <span>AlbionDB: </span>
                       <a
                         href={`https://albiondb.net/player/${player.Name}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >{`https://albiondb.net/player/${player.Name}`}</a>
                     </p>
                     <p>
                       <span>Albion Official Killboard: </span>
                       <a
                         href={`https://albiononline.com/en/killboard/player/${player.Id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >{`https://albiondb.net/player/${player.Id}`}</a>
                     </p>
                     <p>
                       <span>MurderLedger: </span>
                       <a
                         href={`https://murderledger.com/players/${player.Name}/ledger`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >{`https://murderledger.com/players/${player.Name}/ledger`}</a>
                     </p>
                   </section>
