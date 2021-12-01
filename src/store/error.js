@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 
 class Error {
   constructor() {
@@ -6,6 +6,7 @@ class Error {
       requestError: observable,
       setRequestError: action,
       resetRequestError: action,
+      isApiError: computed,
     });
   }
 
@@ -17,6 +18,10 @@ class Error {
 
   resetRequestError() {
     this.requestError = [];
+  }
+
+  get isApiError() {
+    return !!this.requestError.length;
   }
 }
 

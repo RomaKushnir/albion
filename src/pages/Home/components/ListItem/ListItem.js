@@ -1,6 +1,9 @@
 import styles from './ListItem.module.scss';
+import { useNavigate } from 'react-router';
 
 const ListItem = ({ player, position }) => {
+  const navigate = useNavigate();
+
   const playerNicknames = (
     <>
       <span>{player.AllianceName ? `[${player.AllianceName}] ` : ''}</span>
@@ -9,7 +12,10 @@ const ListItem = ({ player, position }) => {
   );
 
   return (
-    <article className={styles.itemWrap}>
+    <article
+      className={styles.itemWrap}
+      onClick={() => navigate(`/player/${player.PlayerId}`)}
+    >
       <div className={styles.playerPosition}>{position}</div>
       <div className={styles.playerCreds}>
         <p>{player.PlayerName}</p>

@@ -2,7 +2,8 @@ import { useEffect, useState, useMemo, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../store';
 import styles from './Home.module.scss';
-import PageWrapper from 'components/PageWrapper';
+import PageContainer from 'components/PageContainer';
+import Error from 'components/Error';
 import FiltersInfo from './components/FiltersInfo';
 import Select from 'components/Select';
 import ReloadButton from '../../components/ReloadButton';
@@ -100,71 +101,86 @@ const Main = observer(() => {
   }, [store.allPlayers, store.weapon]);
 
   return (
-    <PageWrapper errorHandler={onPageReload}>
-      <header className={styles.container}>
-        <h1>ALBION ONLINE LEADERBOARDS</h1>
-        <FiltersInfo />
-      </header>
-      <div className={`${styles.content} ${styles.container}`}>
-        <section className={styles.actionBlock}>
-          <div className={styles.selectsWrapper}>
-            <Select
-              label="Weapon Group"
-              options={store.weapon.filtersWeapon}
-              isOpen={store.filtersInfo.selectState.weapon.open}
-              isLoading={!store.weapon.isWeaponLoaded}
-              defaultValue={weapon}
-              onSelect={(val) => onSelectChange('weapon', val)}
-              onDropdownVisibleChange={(v) =>
-                onDropdownVisibleChange('weapon', v)
-              }
-            />
-            <Select
-              label="Time Range"
-              options={timeRangeOptions}
-              isOpen={store.filtersInfo.selectState.range.open}
-              defaultValue={range}
-              onSelect={(val) => onSelectChange('range', val)}
-              onDropdownVisibleChange={(v) =>
-                onDropdownVisibleChange('range', v)
-              }
-            />
-          </div>
-          <ReloadButton text={'Update Leaderboard'} onUpdate={onDataUpdate} />
-        </section>
-        <section className={styles.listBlock}>
-          <h3>Leaderboard</h3>
-          <div className={styles.listContainer}>
-            {store.allPlayers.isPlayersLoading && <Spinner />}
-            {noPlayersLoaded &&
-              store.allPlayers.players.map((player, i) => (
-                <ListItem
-                  key={offset + i + 1}
-                  player={player}
-                  position={offset + i + 1}
-                />
-              ))}
-            {noPlayersLoaded && (
-              <div className={styles.paginationBlock}>
-                <Pagination
-                  onPageChange={onPageChange}
-                  total={totalItems}
-                  currentPage={page}
-                  pageSize={size}
-                />
-                <div>
-                  <p>{`Page ${page}`}</p>
-                  <p>
-                    {`Showing ${offset + 1}-${offset + size}
+    <>
+      {store.error.isApiError ? (
+        <Error errorHandler={onPageReload} />
+      ) : (
+        <>
+          <PageContainer
+            top={
+              <header className={styles.container}>
+                <h1>ALBION ONLINE LEADERBOARDS</h1>
+                <FiltersInfo />
+              </header>
+            }
+            body={
+              <div className={`${styles.content} ${styles.container}`}>
+                <section className={styles.actionBlock}>
+                  <div className={styles.selectsWrapper}>
+                    <Select
+                      label="Weapon Group"
+                      options={store.weapon.filtersWeapon}
+                      isOpen={store.filtersInfo.selectState.weapon.open}
+                      isLoading={!store.weapon.isWeaponLoaded}
+                      defaultValue={weapon}
+                      onSelect={(val) => onSelectChange('weapon', val)}
+                      onDropdownVisibleChange={(v) =>
+                        onDropdownVisibleChange('weapon', v)
+                      }
+                    />
+                    <Select
+                      label="Time Range"
+                      options={timeRangeOptions}
+                      isOpen={store.filtersInfo.selectState.range.open}
+                      defaultValue={range}
+                      onSelect={(val) => onSelectChange('range', val)}
+                      onDropdownVisibleChange={(v) =>
+                        onDropdownVisibleChange('range', v)
+                      }
+                    />
+                  </div>
+                  <ReloadButton
+                    text={'Update Leaderboard'}
+                    onUpdate={onDataUpdate}
+                  />
+                </section>
+                <section className={styles.listBlock}>
+                  <h3>Leaderboard</h3>
+                  <div className={styles.listContainer}>
+                    {store.allPlayers.isPlayersLoading && <Spinner />}
+                    {noPlayersLoaded &&
+                      store.allPlayers.players.map((player, i) => (
+                        <ListItem
+                          key={offset + i + 1}
+                          player={player}
+                          position={offset + i + 1}
+                        />
+                      ))}
+                    {noPlayersLoaded && (
+                      <div className={styles.paginationBlock}>
+                        <Pagination
+                          onPageChange={onPageChange}
+                          total={totalItems}
+                          currentPage={page}
+                          pageSize={size}
+                        />
+                        <div>
+                          <p>{`Page ${page}`}</p>
+                          <p>
+                            {`Showing ${offset + 1}-${offset + size}
                       out of ${totalItems}`}
-                  </p>
-                </div>
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </section>
               </div>
-            )}
-          </div>
-        </section>
-      </div>
-    </PageWrapper>
+            }
+          />
+        </>
+      )}
+    </>
   );
 });
 
