@@ -139,7 +139,7 @@ const Player = observer(() => {
                         href={`https://albiononline.com/en/killboard/player/${player.Id}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                      >{`https://albiondb.net/player/${player.Id}`}</a>
+                      >{`https://albiononline.com/en/killboard/player/${player.Id}`}</a>
                     </p>
                     <p>
                       <span>MurderLedger: </span>
