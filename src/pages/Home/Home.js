@@ -108,13 +108,13 @@ const Main = observer(() => {
         <>
           <PageContainer
             top={
-              <header className={styles.container}>
+              <>
                 <h1>ALBION ONLINE LEADERBOARDS</h1>
                 <FiltersInfo />
-              </header>
+              </>
             }
             body={
-              <div className={`${styles.content} ${styles.container}`}>
+              <>
                 <section className={styles.actionBlock}>
                   <div className={styles.selectsWrapper}>
                     <Select
@@ -175,7 +175,7 @@ const Main = observer(() => {
                     )}
                   </div>
                 </section>
-              </div>
+              </>
             }
           />
         </>

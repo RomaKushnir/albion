@@ -9,6 +9,7 @@ class Player {
       playerInfo: observable,
       getPlayerInfo: action,
       setPlayerInfo: action,
+      clearPlayerInfo: action,
       isPlayerInfoLoaded: computed,
     });
   }
@@ -26,6 +27,10 @@ class Player {
 
   setPlayerInfo(data) {
     this.playerInfo = data;
+  }
+
+  clearPlayerInfo() {
+    this.playerInfo = {};
   }
 
   get isPlayerInfoLoaded() {

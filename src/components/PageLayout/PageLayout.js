@@ -4,9 +4,9 @@ import { Outlet } from 'react-router-dom';
 function PageLayout() {
   return (
     <div className={styles.wrapper}>
-      <main className={styles.container}>
+      <div className={styles.container}>
         <Outlet />
-      </main>
+      </div>
     </div>
   );
 }
