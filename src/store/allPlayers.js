@@ -10,11 +10,21 @@ class AllPlayers {
       isPlayersLoading: observable,
       fetchPlayers: action,
       setPlayers: action,
+      playersRequestParams: observable,
+      setPlayersRequestParams: action,
     });
   }
 
   players = [];
   isPlayersLoading = false;
+
+  playersRequestParams = {
+    page: 1,
+    offset: 0,
+    size: 10,
+    weapon: 'Bow',
+    range: 'last week',
+  };
 
   async fetchPlayers(params = {}) {
     this.isPlayersLoading = true;
@@ -30,6 +40,10 @@ class AllPlayers {
   setPlayers(data) {
     this.players = data;
     this.isPlayersLoading = false;
+  }
+
+  setPlayersRequestParams(data) {
+    this.playersRequestParams = data;
   }
 }
 
