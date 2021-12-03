@@ -1,5 +1,6 @@
 import { makeObservable, observable, action } from 'mobx';
 import { getPlayers } from '../api';
+import { timeRangeOptions } from 'mockedData';
 
 class AllPlayers {
   constructor(rootStore) {
@@ -23,7 +24,7 @@ class AllPlayers {
     offset: 0,
     size: 10,
     weapon: 'Bow',
-    range: 'last week',
+    range: timeRangeOptions[3].name,
   };
 
   async fetchPlayers(params = {}) {
