@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useMemo, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../store';
 import styles from './Home.module.scss';
@@ -11,27 +11,13 @@ import ListItem from './components/ListItem';
 import Pagination from 'components/Pagination';
 import Spinner from 'components/Spinner';
 import { toCamelCase } from '../../utils/stringHelpers';
-
-const totalItems = 100;
-const timeRangeOptions = [
-  { id: 'week', name: 'week' },
-  { id: 'month', name: 'month' },
-  { id: 'lastWeek', name: 'last week' },
-  { id: 'lastMonth', name: 'last month' },
-];
+import { timeRangeOptions, totalItems } from 'mockedData';
 
 const Main = observer(() => {
   const store = useStore();
 
-  const [requestParams, setRequstParams] = useState({
-    page: 1,
-    offset: 0,
-    size: 10,
-    weapon: 'Bow',
-    range: timeRangeOptions[3].name,
-  });
-
-  const { page, offset, size, weapon, range } = requestParams;
+  const { page, offset, size, weapon, range } =
+    store.allPlayers.playersRequestParams;
 
   const getData = useCallback(
     ({ page = 1, size = 10, offset = 0, weapon, range }) => {
@@ -40,15 +26,16 @@ const Main = observer(() => {
       store.allPlayers
         .fetchPlayers({ offset, size, weapon, range })
         .then(() => {
-          setRequstParams({
-            ...requestParams,
+          store.allPlayers.setPlayersRequestParams({
             page,
             offset,
             size,
+            weapon,
+            range,
           });
         });
     },
-    [store.allPlayers, requestParams]
+    [store.allPlayers]
   );
 
   const noPlayersLoaded = useMemo(() => {
@@ -56,7 +43,10 @@ const Main = observer(() => {
   }, [store.allPlayers.players]);
 
   const onSelectChange = (select, value) => {
-    setRequstParams({ ...requestParams, [select]: value });
+    store.allPlayers.setPlayersRequestParams({
+      ...store.allPlayers.playersRequestParams,
+      [select]: value,
+    });
 
     store.filtersInfo.setSelectValue(select, value);
   };
@@ -86,19 +76,19 @@ const Main = observer(() => {
   };
 
   const onPageReload = () => {
-    getData(requestParams);
+    getData(store.allPlayers.playersRequestParams);
     store.weapon.fetchWeapon();
   };
+
+  useEffect(() => {
+    getData(store.allPlayers.playersRequestParams);
+    store.weapon.fetchWeapon();
+  }, [store.allPlayers, store.weapon, getData]);
 
   useEffect(() => {
     store.filtersInfo.setSelectValue('weapon', weapon);
     store.filtersInfo.setSelectValue('range', range);
   }, [store.filtersInfo, weapon, range]);
-
-  useEffect(() => {
-    store.weapon.fetchWeapon();
-    store.allPlayers.fetchPlayers();
-  }, [store.allPlayers, store.weapon]);
 
   return (
     <>
