@@ -23,8 +23,8 @@ class AllPlayers {
     page: 1,
     offset: 0,
     size: 10,
-    weapon: 'Bow',
-    range: timeRangeOptions[3].name,
+    weapon: 'bow',
+    range: timeRangeOptions[3].id,
   };
 
   async fetchPlayers(params = {}) {

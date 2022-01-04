@@ -12,14 +12,6 @@ import Pagination from 'components/Pagination';
 import Spinner from 'components/Spinner';
 import { timeRangeOptions, totalItems } from 'mockedData';
 
-const totalItems = 100;
-const timeRangeOptions = [
-  { id: 'week', name: 'week' },
-  { id: 'month', name: 'month' },
-  { id: 'lastWeek', name: 'last week' },
-  { id: 'lastMonth', name: 'last month' },
-];
-
 const Main = observer(() => {
   const store = useStore();
 

@@ -1,5 +1,7 @@
+import { useMemo } from 'react';
 import styles from './FiltersInfo.module.scss';
 import { useStore } from 'store';
+import { timeRangeOptions } from 'mockedData';
 
 const FiltersInfo = () => {
   const store = useStore();
@@ -14,6 +16,25 @@ const FiltersInfo = () => {
         );
   };
 
+  const weaponName = useMemo(() => {
+    if (
+      store.weapon.filtersWeapon.length > 0 &&
+      store.filtersInfo.selectState.weapon.value
+    ) {
+      return store.weapon.filtersWeapon.filter(
+        (el) => el.id === store.filtersInfo.selectState.weapon.value
+      )[0].name;
+    }
+  }, [store.weapon.filtersWeapon, store.filtersInfo.selectState.weapon.value]);
+
+  const rangeName = useMemo(() => {
+    if (store.filtersInfo.selectState.range.value) {
+      return timeRangeOptions.filter(
+        (el) => el.id === store.filtersInfo.selectState.range.value
+      )[0].name;
+    }
+  }, [store.filtersInfo.selectState.range.value]);
+
   return (
     <h2 className={styles.subTitle}>
       <span>Best</span>&nbsp;
@@ -21,7 +42,7 @@ const FiltersInfo = () => {
         className={styles.clickable}
         onClick={(e) => clickStateHandler(e, 'weapon')}
       >
-        {store.filtersInfo.selectState.weapon.value}
+        {weaponName}
       </span>
       &nbsp;
       <span>players within</span>&nbsp;
@@ -29,7 +50,7 @@ const FiltersInfo = () => {
         className={styles.clickable}
         onClick={(e) => clickStateHandler(e, 'range')}
       >
-        {store.filtersInfo.selectState.range.value}
+        {rangeName}
       </span>
       &nbsp;
       <span>by total kill fame</span>
