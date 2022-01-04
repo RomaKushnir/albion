@@ -6,8 +6,12 @@ describe('render reload button', () => {
 
   wrap.setProps({ text: 'Reload', onUpdate: () => {} });
 
+  it('should render correctly', () => {
+    expect(wrap).toMatchSnapshot();
+  });
+
   it('should reload button has the text', () => {
-    expect(wrap.find('Button').text()).toBe('Reload');
+    expect(wrap.find('Button').text()).toEqual('Reload');
   });
 
   it('check is clicked', () => {

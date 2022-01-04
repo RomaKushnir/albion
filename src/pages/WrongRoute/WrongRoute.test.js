@@ -2,8 +2,13 @@ import WrongRoute from '.';
 import { shallow } from 'enzyme';
 
 describe('render wrong route component', () => {
+  const wrapper = shallow(<WrongRoute />);
+
+  it('should render correctly', () => {
+    expect(wrapper).toMatchSnapshot();
+  });
+
   it('should have correct title', () => {
-    const wrap = shallow(<WrongRoute />);
-    expect(wrap.find('h1').text()).toBe('This page does not exist');
+    expect(wrapper.find('h1').text()).toBe('This page does not exist');
   });
 });
