@@ -1,4 +1,4 @@
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useStore } from 'store';
 import { observer } from 'mobx-react-lite';
@@ -45,7 +45,7 @@ const Player = observer(() => {
                       <span>{player.GuildName}</span>
                     </h3>
                   </div>
-                  <LinkButton text="Go Home" path={appRoutes.ROOT} />
+                  <LinkButton text="Back to list" path={appRoutes.PARENT} />
                 </section>
               }
               body={
@@ -68,7 +68,7 @@ const Player = observer(() => {
                         <span>{player.LifetimeStatistics.PvE.Hellgate}</span>
                       </p>
                       <p>
-                        <span>Outlands: </span>:
+                        <span>Outlands: </span>
                         <span>{player.LifetimeStatistics.PvE.Outlands}</span>
                       </p>
                       <p>
@@ -114,7 +114,7 @@ const Player = observer(() => {
                         <span>{player.LifetimeStatistics.PvE.Hellgate}</span>
                       </p>
                       <p>
-                        <span>Fishing Fame: </span>:
+                        <span>Fishing Fame: </span>
                         <span>{player.LifetimeStatistics.PvE.Outlands}</span>
                       </p>
                       <p>

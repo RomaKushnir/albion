@@ -1,5 +1,6 @@
 import { makeObservable, observable, action } from 'mobx';
 import { getPlayers } from '../api';
+import { timeRangeOptions } from 'mockedData';
 
 class AllPlayers {
   constructor(rootStore) {
@@ -10,11 +11,21 @@ class AllPlayers {
       isPlayersLoading: observable,
       fetchPlayers: action,
       setPlayers: action,
+      playersRequestParams: observable,
+      setPlayersRequestParams: action,
     });
   }
 
   players = [];
   isPlayersLoading = false;
+
+  playersRequestParams = {
+    page: 1,
+    offset: 0,
+    size: 10,
+    weapon: 'Bow',
+    range: timeRangeOptions[3].name,
+  };
 
   async fetchPlayers(params = {}) {
     this.isPlayersLoading = true;
@@ -30,6 +41,10 @@ class AllPlayers {
   setPlayers(data) {
     this.players = data;
     this.isPlayersLoading = false;
+  }
+
+  setPlayersRequestParams(data) {
+    this.playersRequestParams = data;
   }
 }
 

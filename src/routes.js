@@ -1,5 +1,6 @@
 const appRoutes = {
   ROOT: '/',
+  PARENT: '..',
   PLAYER: 'player/:playerId',
   NOT_MATCHED: '*',
 };
