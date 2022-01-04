@@ -10,7 +10,6 @@ import ReloadButton from '../../components/ReloadButton';
 import ListItem from './components/ListItem';
 import Pagination from 'components/Pagination';
 import Spinner from 'components/Spinner';
-import { toCamelCase } from '../../utils/stringHelpers';
 
 const totalItems = 100;
 const timeRangeOptions = [
@@ -35,8 +34,6 @@ const Main = observer(() => {
 
   const getData = useCallback(
     ({ page = 1, size = 10, offset = 0, weapon, range }) => {
-      range = toCamelCase(range); //transform range for correct request value
-
       store.allPlayers
         .fetchPlayers({ offset, size, weapon, range })
         .then(() => {

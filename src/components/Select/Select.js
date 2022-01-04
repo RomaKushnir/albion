@@ -37,7 +37,7 @@ const CustomSelect = ({
       >
         {!!options.length &&
           options.map((el) => (
-            <Option key={el.id} value={el.name}>
+            <Option key={el.id} value={el.id}>
               {el.name}
             </Option>
           ))}
