@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render reload button should render correctly 1`] = `
+<Button
+  className="btnWrap"
+  icon={<ForwardRef(SvgReloadIco) />}
+  onClick={[Function]}
+  size="large"
+  type="primary"
+>
+  Reload
+</Button>
+`;
